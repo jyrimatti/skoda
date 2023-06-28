@@ -1,12 +1,23 @@
 #! /usr/bin/env nix-shell
-#! nix-shell --pure -i bash -I channel:nixos-22.11-small -p bc nix
+#! nix-shell --pure -i bash -I channel:nixos-23.05-small -p bc nix getoptions
 set -eu
 
-capacity_kwh=$1
-power_kw=$2
+POWER_KW=2.3
 
-# Usage: ./hoursNeededToCharge.sh 13 2.3
+parser() {
+  msg -- "Calculates hours needed to charge the battery to full capacity" ''
+  setup   REST error:usage help:usage -- "Usage:  $0 [options]... <battery capacity kWh>" ''
+  msg -- 'Options:'
+  param   POWER_KW  -p --power init:=$POWER_KW validate:number -- "Charging power in kW (default: $POWER_KW)"
+  disp    :usage    -h --help
+}
+number() { case $OPTARG in (*[!0-9.]*) return 1; esac; }
+eval "$(getoptions parser) exit 1"
+
+if (( $# != 1 )); then usage; exit 1; fi
+
+CAPACITY_KWH=$1
 
 batteryPercentage=$(./batteryPercentage.sh)
 
-echo "(1 - $batteryPercentage) * $capacity_kwh / $power_kw" | bc -l
+echo "(1 - $batteryPercentage) * $CAPACITY_KWH / $POWER_KW" | bc -l

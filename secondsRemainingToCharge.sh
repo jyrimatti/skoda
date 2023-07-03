@@ -2,6 +2,6 @@
 #! nix-shell --pure -i bash -I channel:nixos-23.05-small -p jq nix
 set -eu
 
-# Usage: ./batteryPercentage.sh
+# Usage: ./secondsRemainingToCharge.sh
 
-./charging.sh | jq '.battery.stateOfChargeInPercent'
+./charging.sh | jq '.charging.remainingToCompleteInSeconds'

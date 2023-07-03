@@ -6,5 +6,5 @@ set -eu
 
 source ./skoda_env.sh
 
-token=$(./skoda_login.sh 2)
-curl -s -H "Authorization: Bearer $token" https://api.connect.skoda-auto.cz/api/v1/charging/${SKODA_VIN}/status | jq
+token=$(./skoda_login.sh 1)
+curl -s -H "Authorization: Bearer $token" https://api.skoda-connect.com/vehicles/${SKODA_VIN}/services/rvs | jq

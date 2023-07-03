@@ -61,92 +61,15 @@ Then create somewhere a symlink named `nix-shell` pointing to just the regular s
 
 after which you can override nix-shell with PATH:
 ```
-PATH=~/.local/nix-override:$PATH ./current.sh
+PATH=~/.local/nix-override:$PATH ./charging.sh
 ```
 
 Homebridge configuration
 ========================
 
-You can use these scripts with Homebridge to show and modify values with Apple HomeKit. Example configuration:
-```
-{
-    "bridge": {
-        "name": "Homebridge",
-        "username": "11:22:33:44:55:66",
-        "port": 51826,
-        "pin": "123-45-678"
-    },
-    "description": "",
-    "accessories": [],
-    "platforms": [
-    {
-         "platform": "Cmd4",
-         "name": "Cmd4",
-         "outputConstants": false,
-         "_bridge": {
-            "username": "AA:AA:AA:AA:AA:27",
-            "port": 51827
-         },
-         "interval": 600,
-         "timeout": 10000,
-         "accessories" :
-         [
-            {
-               "type":               "BatteryService",
-               "name":               "Car battery",
-               "displayName":        "Car battery",
-               "batteryLevel":       0,
-               "chargingState":      "NOT_CHARGING",
-               "statusLowBattery":   "BATTERY_LEVEL_NORMAL",
-               "state_cmd":          ". /etc/profile; /home/pi/skoda/batteryPercentage.sh"
-            },
-            {
-               "type":        "Switch",
-               "name":        "Charge",
-               "displayName": "Charge",
-               "state_cmd":   ". /etc/profile; /home/pi/skoda/charge.sh"
-            },
-            {
-               "type":        "Switch",
-               "name":        "Clima",
-               "displayName": "Clima",
-               "state_cmd":   ". /etc/profile; /home/pi/skoda/clima.sh"
-            },
-            {
-               "type":        "Switch",
-               "name":        "Window heating",
-               "displayName": "Window heating",
-               "state_cmd":   ". /etc/profile; /home/pi/skoda/windowHeating.sh"
-            },
-            {
-               "type":                    "TemperatureSensor",
-               "name":                    "Second remaining to charge",
-               "displayName":             "Second remaining to charge",
-               "statusActive":            "TRUE",
-               "currentTemperature":      66.6,
-               "state_cmd":               ". /etc/profile; /home/pi/skoda/secondRemainingToCharge.sh"
-            },
-            {
-               "type":                    "TemperatureSensor",
-               "name":                    "Second remaining to heat",
-               "displayName":             "Second remaining to heat",
-               "statusActive":            "TRUE",
-               "currentTemperature":      66.6,
-               "state_cmd":               ". /etc/profile; /home/pi/skoda/secondRemainingToHeat.sh"
-            },
-            {
-               "type":                    "TemperatureSensor",
-               "name":                    "Hours needed to charge",
-               "displayName":             "Hours needed to charge",
-               "statusActive":            "TRUE",
-               "currentTemperature":      66.6,
-               "state_cmd":               ". /etc/profile; /home/pi/skoda/hoursNeededToCharge.sh"
-            }
-        ]
-    }
-    ]
-}
-```
+You can use these scripts with Homebridge to show and modify values with Apple HomeKit.
+
+See [example configuration](homebridge/config.json).
 
 Standing on the shoulders of
 ============================

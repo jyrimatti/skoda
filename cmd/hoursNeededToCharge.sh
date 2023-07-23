@@ -14,7 +14,7 @@ parser() {
 number() { case $OPTARG in (*[!0-9.]*) return 1; esac; }
 eval "$(getoptions parser) exit 1"
 
-if (( $# != 1 )); then usage; exit 1; fi
+if (( $# == 0 )); then usage; exit 1; fi
 
 CAPACITY_KWH=$1
 

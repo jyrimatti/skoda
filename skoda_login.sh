@@ -35,6 +35,10 @@ login() {
 
     token=$(curl -Ls -b "/tmp/skoda-cookies-$endpoint.txt" -i -D - -o /dev/null "https://identity.vwgroup.io/signin-service/v1/${CLIENT_ID}/login/authenticate" -d "hmac=${params2}&${paramsOther}email=${SKODA_USER}&password=$SKODA_PASSWORD" | grep 'location:' | tail -n1 | sed 's/.*code=\(.*\)/\1/')
     if [ -z "$token" ]; then
+        echo "Login failed, trying again" >&2
+        token=$(curl -vLs -b "/tmp/skoda-cookies-$endpoint.txt" -i -D - -o /dev/null "https://identity.vwgroup.io/signin-service/v1/${CLIENT_ID}/login/authenticate" -d "hmac=${params2}&${paramsOther}email=${SKODA_USER}&password=$SKODA_PASSWORD" | grep 'location:' | tail -n1 | sed 's/.*code=\(.*\)/\1/')
+    fi
+    if [ -z "$token" ]; then
         echo "Login failed" >&2
         exit 1
     fi

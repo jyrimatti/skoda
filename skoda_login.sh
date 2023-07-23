@@ -39,7 +39,7 @@ login() {
 if [ ! -f "/tmp/skoda-token" ]; then
     login
 fi
-for i in $(find /tmp/skoda-token -mmin +30); do
+for i in $(find /tmp/skoda-token -mmin +5); do
     login
 done
 

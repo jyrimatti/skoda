@@ -20,16 +20,27 @@ authorize() {
     echo '</root>'
 }
 
-params=$(authorize | xq -r '.root.input[] | (."@name" + "=" + ."@value")')
-paramsHmac=$(echo "$params" | grep 'hmac' | tr '\n' '&')
-paramsOther=$(echo "$params" | grep -v 'hmac' | tr '\n' '&')
+login() {
+    params=$(authorize | xq -r '.root.input[] | (."@name" + "=" + ."@value")')
+    paramsHmac=$(echo "$params" | grep 'hmac' | tr '\n' '&')
+    paramsOther=$(echo "$params" | grep -v 'hmac' | tr '\n' '&')
 
-identifier() {
-    curl -Ls -b /tmp/skoda-cookies.txt "https://identity.vwgroup.io/signin-service/v1/${CLIENT_ID}/login/identifier" -d "${paramsHmac}${paramsOther}email=${SKODA_USER}" | htmlq --text 'head script' | grep 'templateModel:' | sed 's/^\s*templateModel://' | sed 's/,$//'
+    identifier() {
+        curl -Ls -b /tmp/skoda-cookies.txt "https://identity.vwgroup.io/signin-service/v1/${CLIENT_ID}/login/identifier" -d "${paramsHmac}${paramsOther}email=${SKODA_USER}" | htmlq --text 'head script' | grep 'templateModel:' | sed 's/^\s*templateModel://' | sed 's/,$//'
+    }
+
+    params2=$(identifier | jq -r '.hmac')
+
+    curl -Ls -b /tmp/skoda-cookies.txt -i -D - -o /dev/null "https://identity.vwgroup.io/signin-service/v1/${CLIENT_ID}/login/authenticate" -d "hmac=${params2}&${paramsOther}email=${SKODA_USER}&password=$SKODA_PASSWORD" | grep 'location:' | tail -n1 | sed 's/.*code=\(.*\)/\1/' > /tmp/skoda-token
+
+    rm /tmp/skoda-cookies.txt
 }
 
-params2=$(identifier | jq -r '.hmac')
+if [ ! -f "/tmp/skoda-token" ]; then
+    login
+fi
+for i in $(find /tmp/skoda-token -mmin +30); do
+    login
+done
 
-curl -Ls -b /tmp/skoda-cookies.txt -i -D - -o /dev/null "https://identity.vwgroup.io/signin-service/v1/${CLIENT_ID}/login/authenticate" -d "hmac=${params2}&${paramsOther}email=${SKODA_USER}&password=$SKODA_PASSWORD" | grep 'location:' | tail -n1 | sed 's/.*code=\(.*\)/\1/'
-
-rm -f /tmp/skoda-cookies.txt
+cat /tmp/skoda-token

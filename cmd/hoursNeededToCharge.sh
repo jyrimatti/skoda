@@ -20,4 +20,4 @@ CAPACITY_KWH=$1
 
 batteryPercentage=$(./cmd/batteryPercentage.sh)
 
-echo "(1 - $batteryPercentage) * $CAPACITY_KWH / $POWER_KW" | bc -l
+echo "(100 - $batteryPercentage)/100 * $CAPACITY_KWH / $POWER_KW" | bc -l

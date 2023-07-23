@@ -18,7 +18,7 @@ fi
 
 authorize() {
     echo '<root>'
-    curl -Ls --cookie-jar /tmp/skoda-cookies.txt "https://identity.vwgroup.io/oidc/v1/authorize?client_id=${CLIENT_ID}&redirect_uri=$REDIRECT&response_type=code&scope=$SCOPE" | grep 'type="hidden"'
+    curl -Ls --cookie-jar "/tmp/skoda-cookies-$endpoint.txt" "https://identity.vwgroup.io/oidc/v1/authorize?client_id=${CLIENT_ID}&redirect_uri=$REDIRECT&response_type=code&scope=$SCOPE" | grep 'type="hidden"'
     echo '</root>'
 }
 
@@ -28,14 +28,19 @@ login() {
     paramsOther=$(echo "$params" | grep -v 'hmac' | tr '\n' '&')
 
     identifier() {
-        curl -Ls -b /tmp/skoda-cookies.txt "https://identity.vwgroup.io/signin-service/v1/${CLIENT_ID}/login/identifier" -d "${paramsHmac}${paramsOther}email=${SKODA_USER}" | htmlq --text 'head script' | grep 'templateModel:' | sed 's/^\s*templateModel://' | sed 's/,$//'
+        curl -Ls -b "/tmp/skoda-cookies-$endpoint.txt" "https://identity.vwgroup.io/signin-service/v1/${CLIENT_ID}/login/identifier" -d "${paramsHmac}${paramsOther}email=${SKODA_USER}" | htmlq --text 'head script' | grep 'templateModel:' | sed 's/^\s*templateModel://' | sed 's/,$//'
     }
 
     params2=$(identifier | jq -r '.hmac')
 
-    curl -Ls -b /tmp/skoda-cookies.txt -i -D - -o /dev/null "https://identity.vwgroup.io/signin-service/v1/${CLIENT_ID}/login/authenticate" -d "hmac=${params2}&${paramsOther}email=${SKODA_USER}&password=$SKODA_PASSWORD" | grep 'location:' | tail -n1 | sed 's/.*code=\(.*\)/\1/' > "/tmp/skoda-token-$endpoint"
+    token=$(curl -Ls -b "/tmp/skoda-cookies-$endpoint.txt" -i -D - -o /dev/null "https://identity.vwgroup.io/signin-service/v1/${CLIENT_ID}/login/authenticate" -d "hmac=${params2}&${paramsOther}email=${SKODA_USER}&password=$SKODA_PASSWORD" | grep 'location:' | tail -n1 | sed 's/.*code=\(.*\)/\1/')
+    if [ -z "$token" ]; then
+        echo "Login failed" >&2
+        exit 1
+    fi
+    echo "$token" > "/tmp/skoda-token-$endpoint"
 
-    rm /tmp/skoda-cookies.txt
+    rm "/tmp/skoda-cookies-$endpoint.txt"
 }
 
 if [ ! -f "/tmp/skoda-token-$endpoint" ]; then

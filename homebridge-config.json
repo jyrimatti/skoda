@@ -27,25 +27,25 @@
                "batteryLevel":       0,
                "chargingState":      "NOT_CHARGING",
                "statusLowBattery":   "BATTERY_LEVEL_NORMAL",
-               "state_cmd":          ". /etc/profile; cd /home/pi/skoda; ./homebridge/batteryPercentage.sh"
+               "state_cmd":          ". /etc/profile; cd /home/pi/skoda; ./cmd/batteryPercentage.sh"
             },
             {
                "type":        "Switch",
                "name":        "Charge",
                "displayName": "Charge",
-               "state_cmd":   ". /etc/profile; cd /home/pi/skoda/; ./homebridge/charge.sh"
+               "state_cmd":   ". /etc/profile; cd /home/pi/skoda/; ./cmd/charge.sh"
             },
             {
                "type":        "Switch",
                "name":        "Clima",
                "displayName": "Clima",
-               "state_cmd":   ". /etc/profile; cd /home/pi/skoda/; ./homebridge/clima.sh"
+               "state_cmd":   ". /etc/profile; cd /home/pi/skoda/; ./cmd/clima.sh"
             },
             {
                "type":        "Switch",
                "name":        "Window heating",
                "displayName": "Window heating",
-               "state_cmd":   ". /etc/profile; cd /home/pi/skoda/; ./homebridge/windowHeating.sh"
+               "state_cmd":   ". /etc/profile; cd /home/pi/skoda/; ./cmd/windowHeating.sh"
             },
             {
                "type":                    "TemperatureSensor",
@@ -53,7 +53,7 @@
                "displayName":             "Second remaining to charge",
                "statusActive":            "TRUE",
                "currentTemperature":      66.6,
-               "state_cmd":               ". /etc/profile; cd /home/pi/skoda; ./homebridge/secondRemainingToCharge.sh"
+               "state_cmd":               ". /etc/profile; cd /home/pi/skoda; ./cmd/secondRemainingToCharge.sh"
             },
             {
                "type":                    "TemperatureSensor",
@@ -61,7 +61,7 @@
                "displayName":             "Second remaining to heat",
                "statusActive":            "TRUE",
                "currentTemperature":      66.6,
-               "state_cmd":               ". /etc/profile; cd /home/pi/skoda; ./homebridge/secondRemainingToHeat.sh"
+               "state_cmd":               ". /etc/profile; cd /home/pi/skoda; ./cmd/secondRemainingToHeat.sh"
             },
             {
                "type":                    "TemperatureSensor",
@@ -69,7 +69,7 @@
                "displayName":             "Hours needed to charge",
                "statusActive":            "TRUE",
                "currentTemperature":      66.6,
-               "state_cmd":               ". /etc/profile; cd /home/pi/skoda; ./homebridge/hoursNeededToCharge.sh"
+               "state_cmd":               ". /etc/profile; cd /home/pi/skoda; ./cmd/hoursNeededToCharge.sh"
             }
         ]
     }

@@ -5,8 +5,8 @@ set -eu
 
 endpoint=$1
 
-cookiefile="/tmp/skoda-cookies-$USER-$endpoint.txt"
-tokenfile="/tmp/skoda-token-$USER-$endpoint"
+cookiefile="/tmp/skoda-$USER/cookies-$endpoint.txt"
+tokenfile="/tmp/skoda-$USER/token-$endpoint"
 
 if [ "$endpoint" == "1" ]; then
     CLIENT_ID="d2d5cfa4-fdeb-44cb-a621-853c649748ad%40apps_vw-dilab_com"

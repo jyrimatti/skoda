@@ -6,6 +6,9 @@ set -eu
 
 endpoint=$1
 
+cookiefile="/tmp/skoda-cookies-$USER-$endpoint.txt"
+tokenfile="/tmp/skoda-token-$USER-$endpoint"
+
 if [ "$endpoint" == "1" ]; then
     CLIENT_ID="d2d5cfa4-fdeb-44cb-a621-853c649748ad%40apps_vw-dilab_com"
     REDIRECT="https%3A%2F%2Fwww.skoda-connect.com%2Fwrapper-callback"
@@ -18,7 +21,7 @@ fi
 
 authorize() {
     echo '<root>'
-    curl -Ls --cookie-jar "/tmp/skoda-cookies-$endpoint.txt" "https://identity.vwgroup.io/oidc/v1/authorize?client_id=${CLIENT_ID}&redirect_uri=$REDIRECT&response_type=code&scope=$SCOPE" | grep 'type="hidden"'
+    curl -Ls --cookie-jar "$cookiefile" "https://identity.vwgroup.io/oidc/v1/authorize?client_id=${CLIENT_ID}&redirect_uri=$REDIRECT&response_type=code&scope=$SCOPE" | grep 'type="hidden"'
     echo '</root>'
 }
 
@@ -28,30 +31,30 @@ login() {
     paramsOther=$(echo "$params" | grep -v 'hmac' | tr '\n' '&')
 
     identifier() {
-        curl -Ls -b "/tmp/skoda-cookies-$endpoint.txt" "https://identity.vwgroup.io/signin-service/v1/${CLIENT_ID}/login/identifier" -d "${paramsHmac}${paramsOther}email=${SKODA_USER}" | htmlq --text 'head script' | grep 'templateModel:' | sed 's/^\s*templateModel://' | sed 's/,$//'
+        curl -Ls -b "$cookiefile" "https://identity.vwgroup.io/signin-service/v1/${CLIENT_ID}/login/identifier" -d "${paramsHmac}${paramsOther}email=${SKODA_USER}" | htmlq --text 'head script' | grep 'templateModel:' | sed 's/^\s*templateModel://' | sed 's/,$//'
     }
 
     params2=$(identifier | jq -r '.hmac')
 
-    token=$(curl -Ls -b "/tmp/skoda-cookies-$endpoint.txt" -i -D - -o /dev/null "https://identity.vwgroup.io/signin-service/v1/${CLIENT_ID}/login/authenticate" -d "hmac=${params2}&${paramsOther}email=${SKODA_USER}&password=$SKODA_PASSWORD" | grep 'location:' | tail -n1 | sed 's/.*code=\(.*\)/\1/')
+    token=$(curl -Ls -b "$cookiefile" -i -D - -o /dev/null "https://identity.vwgroup.io/signin-service/v1/${CLIENT_ID}/login/authenticate" -d "hmac=${params2}&${paramsOther}email=${SKODA_USER}&password=$SKODA_PASSWORD" | grep 'location:' | tail -n1 | sed 's/.*code=\(.*\)/\1/')
     if [ -z "$token" ]; then
         echo "Login failed, trying again" >&2
-        token=$(curl -vLs -b "/tmp/skoda-cookies-$endpoint.txt" -i -D - -o /dev/null "https://identity.vwgroup.io/signin-service/v1/${CLIENT_ID}/login/authenticate" -d "hmac=${params2}&${paramsOther}email=${SKODA_USER}&password=$SKODA_PASSWORD" | grep 'location:' | tail -n1 | sed 's/.*code=\(.*\)/\1/')
+        token=$(curl -vLs -b "$cookiefile" -i -D - -o /dev/null "https://identity.vwgroup.io/signin-service/v1/${CLIENT_ID}/login/authenticate" -d "hmac=${params2}&${paramsOther}email=${SKODA_USER}&password=$SKODA_PASSWORD" | grep 'location:' | tail -n1 | sed 's/.*code=\(.*\)/\1/')
     fi
     if [ -z "$token" ]; then
         echo "Login failed" >&2
         exit 1
     fi
-    echo "$token" > "/tmp/skoda-token-$endpoint"
+    echo "$token" > "$tokenfile"
 
-    rm "/tmp/skoda-cookies-$endpoint.txt"
+    rm "$cookiefile"
 }
 
-if [ ! -f "/tmp/skoda-token-$endpoint" ]; then
+if [ ! -f "$tokenfile" ]; then
     login
 fi
-for i in $(find /tmp/skoda-token-"$endpoint" -mmin +5); do
+for i in $(find "$tokenfile" -mmin +5); do
     login
 done
 
-cat /tmp/skoda-token-"$endpoint"
+cat "$tokenfile"

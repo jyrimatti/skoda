@@ -1,0 +1,75 @@
+[[services]]
+type = "AccessoryInformation"
+
+[services.characteristics]
+Identify = {} # leave property completely out 'cos otherwise Homekit won't accept
+Manufacturer = "Skoda"
+Model = "Octavia iV"
+Name = "Auto"
+SerialNumber = "AA:AA:AA:AA:AA:CC"
+FirmwareRevision = "100.1.1"
+
+
+[[services]]
+type = "BatteryService"
+cmd = "cd skoda; ./cmd/batteryPercentage.sh"
+
+[services.characteristics]
+BatteryLevel = 0
+ChargingState = 0
+StatusLowBattery = 0
+Name = "Akku"
+
+
+[[services]]
+type = "Switch"
+cmd = "cd skoda; ./cmd/charge.sh"
+
+[services.characteristics]
+On = false
+Name = "Lataus"
+
+
+[[services]]
+type = "Switch"
+cmd = "cd skoda; ./cmd/clima.sh"
+
+[services.characteristics]
+On = false
+Name = "Ilmastointi"
+
+
+[[services]]
+type = "Switch"
+cmd = "cd skoda; ./cmd/windowHeating.sh"
+
+[services.characteristics]
+On = false
+Name = "Ikkunalämmitys"
+
+
+[[services]]
+type = "TemperatureSensor"
+cmd = "cd skoda; ./cmd/secondRemainingToCharge.sh"
+
+[services.characteristics]
+CurrentTemperature = 0
+Name = "Latausaikaa jäljellä (s)"
+
+
+[[services]]
+type = "TemperatureSensor"
+cmd = "cd skoda; ./cmd/secondRemainingToHeat.sh"
+
+[services.characteristics]
+CurrentTemperature = 0
+Name = "Lämmitysaikaa jäljellä (s)"
+
+
+[[services]]
+type = "TemperatureSensor"
+cmd = "cd skoda; ./cmd/hoursNeededToCharge.sh"
+
+[services.characteristics]
+CurrentTemperature = 0
+Name = "Tarvittava latausaika (h)"

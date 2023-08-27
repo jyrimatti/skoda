@@ -1,4 +1,4 @@
-#! /usr/bin/env bash
+#! /usr/bin/env dash
 set -eu
 
 # Usage: SKODA_USER=foo@example.com SKODA_PASSWORD=mypass ./skoda_login.sh <1|2>
@@ -8,11 +8,11 @@ endpoint=$1
 cookiefile="/tmp/skoda-$USER/cookies-$endpoint.txt"
 tokenfile="/tmp/skoda-$USER/token-$endpoint"
 
-if [ "$endpoint" == "1" ]; then
+if [ "$endpoint" = "1" ]; then
     CLIENT_ID="d2d5cfa4-fdeb-44cb-a621-853c649748ad%40apps_vw-dilab_com"
     REDIRECT="https%3A%2F%2Fwww.skoda-connect.com%2Fwrapper-callback"
     SCOPE="openid%20mbb"
-elif [ "$endpoint" == "2" ]; then
+elif [ "$endpoint" = "2" ]; then
     CLIENT_ID="7f045eee-7003-4379-9968-9355ed2adb06@apps_vw-dilab_com"
     REDIRECT="skodaconnect%3A%2F%2Foidc.login%2F"
     SCOPE="openid%20profile%20address%20cars%20email%20birthdate%20badge%20mbb%20phone%20driversLicense%20dealers%20profession%20vin%20mileage"

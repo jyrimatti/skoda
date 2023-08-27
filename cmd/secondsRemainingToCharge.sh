@@ -1,5 +1,5 @@
 #! /usr/bin/env nix-shell
-#! nix-shell --pure -i bash -I channel:nixos-23.05-small -p jq nix bc
+#! nix-shell --pure -i dash -I channel:nixos-23.05-small -p jq nix bc
 set -eu
 
 # Usage: ./secondsRemainingToCharge.sh

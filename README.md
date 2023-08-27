@@ -50,13 +50,13 @@ However, constantly running nix-shell has a lot of overhead, so you might want t
 
 For example, installing with Nix:
 ```
-> nix-env -f https://github.com/NixOS/nixpkgs/archive/nixos-23.05-small.tar.gz -i curl jq yq htmlq bc getoptions
+> nix-env -f https://github.com/NixOS/nixpkgs/archive/nixos-23.05-small.tar.gz -iA nixpkgs.dash nixpkgs.curl nixpkgs.jq nixpkgs.htmlq nixpkgs.bc nixpkgs.flock nixpkgs.gnugrep nixpkgs.gnused nixpkgs.findutils
 ```
 
 Then create somewhere a symlink named `nix-shell` pointing to just the regular shell:
 ```
 > mkdir ~/.local/nix-override
-> ln -s /bin/sh ~/.local/nix-override/nix-shell
+> ln -s /home/pi/.nix-profile/bin/dash ~/.local/nix-override/nix-shell
 ```
 
 after which you can override nix-shell with PATH:
@@ -69,19 +69,13 @@ Homebridge configuration
 
 You can use these scripts with Homebridge to show and modify values with Apple HomeKit.
 
-See [example configuration](homebridge/config.json).
+See [example configuration](./homebridge-config.json).
 
 Standing on the shoulders of
 ============================
 - [curl](https://curl.se)
-- [websocat](https://github.com/vi/websocat)
-- [getoptions](https://github.com/ko1nksm/getoptions)
 - [jq](https://stedolan.github.io/jq/)
-- [yq](https://github.com/kislyuk/yq)
 - [htmlq](https://github.com/mgdm/htmlq)
 - [SQLite](https://www.sqlite.org/index.html)
-- [sql.js-httpvfs](https://github.com/phiresky/sql.js-httpvfs)
-- [jquery](https://jquery.com)
-- [flot](http://www.flotcharts.org)
 - [homebridge](https://homebridge.io)
 - [cmd4](https://github.com/ztalbot2000/homebridge-cmd4)

@@ -50,7 +50,7 @@ Name = "Ikkunalämmitys"
 
 [[services]]
 type = "TemperatureSensor"
-cmd = "cd skoda; ./cmd/secondRemainingToCharge.sh"
+cmd = "cd skoda; ./cmd/secondsRemainingToCharge.sh"
 
 [services.characteristics]
 CurrentTemperature = 0
@@ -59,7 +59,7 @@ Name = "Latausaikaa jäljellä (s)"
 
 [[services]]
 type = "TemperatureSensor"
-cmd = "cd skoda; ./cmd/secondRemainingToHeat.sh"
+cmd = "cd skoda; ./cmd/secondsRemainingToHeat.sh"
 
 [services.characteristics]
 CurrentTemperature = 0
@@ -68,7 +68,7 @@ Name = "Lämmitysaikaa jäljellä (s)"
 
 [[services]]
 type = "TemperatureSensor"
-cmd = "cd skoda; ./cmd/hoursNeededToCharge.sh"
+cmd = "cd skoda; ./cmd/hoursNeededToCharge.sh 13"
 
 [services.characteristics]
 CurrentTemperature = 0

@@ -1,5 +1,5 @@
 #! /usr/bin/env nix-shell
-#! nix-shell --pure -i dash -I channel:nixos-23.05-small -p cacert curl jq nix
+#! nix-shell --pure -i dash -I channel:nixos-23.05-small -p cacert curl jq nix dash
 set -eu
 
 # Usage: ./charging.sh

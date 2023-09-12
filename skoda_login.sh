@@ -6,6 +6,6 @@ set -eu
 
 endpoint=$1
 
-mkdir -p "/tmp/skoda-$USER"
+test -e "/tmp/skoda-$USER" || mkdir -p "/tmp/skoda-$USER"
 
 flock "/tmp/skoda-$USER/lock-$endpoint" ./skoda_login_actual.sh "$endpoint"

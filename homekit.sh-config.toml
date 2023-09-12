@@ -20,7 +20,6 @@ ChargingState = 0
 StatusLowBattery = 0
 [services.characteristics.BatteryLevel]
 cmd = "cd skoda; ./cmd/batteryPercentage.sh"
-value = 0
 
 
 [[services]]
@@ -30,7 +29,6 @@ type = "Switch"
 Name = "Lataus"
 [services.characteristics.On]
 cmd = "cd skoda; ./cmd/charge.sh"
-value = false
 
 
 
@@ -41,7 +39,6 @@ type = "Switch"
 Name = "Ilmastointi"
 [services.characteristics.On]
 cmd = "cd skoda; ./cmd/clima.sh"
-value = false
 
 
 [[services]]
@@ -51,7 +48,6 @@ type = "Switch"
 Name = "Ikkunalämmitys"
 [services.characteristics.On]
 cmd = "cd skoda; ./cmd/windowHeating.sh"
-value = false
 
 
 [[services]]
@@ -62,7 +58,6 @@ type = "TemperatureSensor"
 Name = "Latausaikaa jäljellä (s)"
 [services.characteristics.CurrentTemperature]
 cmd = "cd skoda; ./cmd/secondsRemainingToCharge.sh"
-value = 0
 
 
 [[services]]
@@ -73,7 +68,6 @@ type = "TemperatureSensor"
 Name = "Lämmitysaikaa jäljellä sekuntia"
 [services.characteristics.CurrentTemperature]
 cmd = "cd skoda; ./cmd/secondsRemainingToHeat.sh"
-value = 0
 
 
 
@@ -85,4 +79,3 @@ type = "TemperatureSensor"
 Name = "Tarvittava latausaika tuntia"
 [services.characteristics.CurrentTemperature]
 cmd = "cd skoda; ./cmd/hoursNeededToCharge.sh 13"
-value = 0

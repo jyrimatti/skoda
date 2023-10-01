@@ -5,21 +5,25 @@ type = "AccessoryInformation"
 Identify = {} # leave property completely out 'cos otherwise Homekit won't accept
 Manufacturer = "Skoda"
 Model = "Octavia iV"
-Name = "Auto"
+Name = "Skoda"
 SerialNumber = "AA:AA:AA:AA:AA:CC"
 FirmwareRevision = "100.1.1"
 
 
 [[services]]
 type = "BatteryService"
-#polling = 60
 
 [services.characteristics]
 Name = "Akku"
-ChargingState = 0
-StatusLowBattery = 0
 [services.characteristics.BatteryLevel]
+polling = 300
 cmd = "cd skoda; ./cmd/batteryPercentage.sh"
+[services.characteristics.ChargingState]
+polling = 30
+cmd = "cd skoda; ./cmd/charge.sh"
+[services.characteristics.StatusLowBattery]
+polling = 300
+cmd = "cd skoda; test \"$(./cmd/batteryPercentage.sh)\" -lt 50 && echo 1 || echo 0"
 
 
 [[services]]
@@ -52,28 +56,28 @@ cmd = "cd skoda; ./cmd/windowHeating.sh"
 
 [[services]]
 type = "TemperatureSensor"
-#polling = 60
 
 [services.characteristics]
 Name = "Latausaikaa jäljellä (s)"
 [services.characteristics.CurrentTemperature]
 cmd = "cd skoda; ./cmd/secondsRemainingToCharge.sh"
+polling = 300
+MaxValue = 36000
 
 
 [[services]]
 type = "TemperatureSensor"
-#polling = 60
 
 [services.characteristics]
 Name = "Lämmitysaikaa jäljellä sekuntia"
 [services.characteristics.CurrentTemperature]
 cmd = "cd skoda; ./cmd/secondsRemainingToHeat.sh"
-
+polling = 60
+maxValue = 7200
 
 
 [[services]]
 type = "TemperatureSensor"
-#polling = 60
 
 [services.characteristics]
 Name = "Tarvittava latausaika tuntia"

@@ -20,9 +20,9 @@ else
     ret=$(curl -s -H "Authorization: Bearer $token" https://api.connect.skoda-auto.cz/api/v1/charging/${SKODA_VIN}/status | jq -r '.charging.state')
     if [ "$ret" = "Charging" ]; then
         echo 1
-    elif [ "$ret" = "ReadyForCharging" ] || [ "$ret" = "NotReadyForCharging" ]; then
+    elif [ "$ret" = "ReadyForCharging" ]; then
         echo 0
     else
-        echo "$ret"
+        echo 2
     fi
 fi

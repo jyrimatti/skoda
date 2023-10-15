@@ -23,7 +23,7 @@ polling = 30
 cmd = "cd skoda; ./cmd/charge.sh"
 [services.characteristics.StatusLowBattery]
 polling = 300
-cmd = "cd skoda; test \"$(./cmd/batteryPercentage.sh)\" -lt 50 && echo 1 || echo 0"
+cmd = "cd skoda; ./cmd/lowBattery.sh"
 
 
 [[services]]

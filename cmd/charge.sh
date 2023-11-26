@@ -23,6 +23,7 @@ else
     elif [ "$ret" = "ReadyForCharging" ]; then
         echo 0
     else
-        echo 2
+        echo "Unexpected response: $ret" >&2
+        echo 0
     fi
 fi

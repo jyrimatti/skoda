@@ -62,7 +62,7 @@ Name = "Latausaikaa jäljellä (s)"
 [services.characteristics.CurrentTemperature]
 cmd = "cd skoda; ./cmd/secondsRemainingToCharge.sh"
 polling = 300
-MaxValue = 36000
+maxValue = 36000
 
 
 [[services]]

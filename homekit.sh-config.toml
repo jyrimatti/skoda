@@ -16,13 +16,10 @@ type = "BatteryService"
 [services.characteristics]
 Name = "Akku"
 [services.characteristics.BatteryLevel]
-polling = 300
 cmd = "cd skoda; ./cmd/batteryPercentage.sh"
 [services.characteristics.ChargingState]
-polling = 30
 cmd = "cd skoda; ./cmd/charge.sh"
 [services.characteristics.StatusLowBattery]
-polling = 300
 cmd = "cd skoda; ./cmd/lowBattery.sh"
 
 
@@ -65,7 +62,6 @@ Name = "Latausaikaa jäljellä (s)"
 ConfiguredName = "Latausaikaa jäljellä (s)"
 [services.characteristics.CurrentTemperature]
 cmd = "cd skoda; ./cmd/secondsRemainingToCharge.sh"
-polling = 300
 maxValue = 36000
 
 
@@ -77,7 +73,6 @@ Name = "Lämmitysaikaa jäljellä sekuntia"
 ConfiguredName = "Lämmitysaikaa jäljellä sekuntia"
 [services.characteristics.CurrentTemperature]
 cmd = "cd skoda; ./cmd/secondsRemainingToHeat.sh"
-polling = 60
 maxValue = 7200
 
 

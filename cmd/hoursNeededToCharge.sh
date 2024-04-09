@@ -18,6 +18,6 @@ if [ $# = 0 ]; then usage; exit 1; fi
 
 CAPACITY_KWH=$1
 
-batteryPercentage=$(./cmd/batteryPercentage.sh)
+batteryPercentage="$(./cmd/batteryPercentage.sh)"
 
 printf %.1f "$(echo "(100 - $batteryPercentage)/100 * $CAPACITY_KWH / $POWER_KW" | bc -l)"

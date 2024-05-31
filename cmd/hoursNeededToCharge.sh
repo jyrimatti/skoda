@@ -1,5 +1,5 @@
 #! /usr/bin/env nix-shell
-#! nix-shell --pure --keep LD_LIBRARY_PATH -i dash -I channel:nixos-23.11-small -p bc nix dash getoptions
+#! nix-shell --pure --keep XDG_RUNTIME_DIR -i dash -I channel:nixos-23.11-small -p bc nix dash getoptions
 set -eu
 
 POWER_KW=2.3
@@ -16,7 +16,7 @@ eval "$(getoptions parser) exit 1"
 
 if [ $# = 0 ]; then usage; exit 1; fi
 
-CAPACITY_KWH=$1
+CAPACITY_KWH="$1"
 
 batteryPercentage="$(./cmd/batteryPercentage.sh)"
 

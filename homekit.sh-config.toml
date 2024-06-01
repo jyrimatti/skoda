@@ -1,3 +1,7 @@
+bridge = "skoda"
+port = 12305
+username = "AA:AA:AA:AA:AA:05"
+
 [[services]]
 type = "AccessoryInformation"
 
@@ -6,7 +10,7 @@ Identify = {} # leave property completely out 'cos otherwise Homekit won't accep
 Manufacturer = "Skoda"
 Model = "Octavia iV"
 Name = "Skoda"
-SerialNumber = "AA:AA:AA:AA:AA:CC"
+SerialNumber = "AA:AA:AA:AA:AA:05"
 FirmwareRevision = "100.1.1"
 
 

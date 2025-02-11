@@ -1,5 +1,6 @@
 #! /usr/bin/env nix-shell
-#! nix-shell --pure --keep CREDENTIALS_DIRECTORY --keep XDG_RUNTIME_DIR -i dash -I channel:nixos-24.11-small -p bc nix dash getoptions
+#! nix-shell --pure --keep CREDENTIALS_DIRECTORY --keep BKT_SCOPE --keep BKT_CACHE_DIR
+#! nix-shell -i dash -I channel:nixos-24.11-small -p bc nix dash getoptions bkt
 set -eu
 
 POWER_KW=2.3
@@ -18,6 +19,6 @@ if [ $# = 0 ]; then usage; exit 1; fi
 
 CAPACITY_KWH="$1"
 
-batteryPercentage="$(./cmd/batteryPercentage.sh)"
+batteryPercentage="$(dash ./cmd/batteryPercentage.sh)"
 
 printf %.1f "$(echo "(100 - $batteryPercentage)/100 * $CAPACITY_KWH / $POWER_KW" | bc -l)"

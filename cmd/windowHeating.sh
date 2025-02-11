@@ -1,5 +1,6 @@
 #! /usr/bin/env nix-shell
-#! nix-shell --pure --keep CREDENTIALS_DIRECTORY --keep XDG_RUNTIME_DIR -i dash -I channel:nixos-24.11-small -p coreutils cacert curl jq nix dash
+#! nix-shell --pure --keep CREDENTIALS_DIRECTORY --keep BKT_SCOPE --keep BKT_CACHE_DIR
+#! nix-shell -i dash -I channel:nixos-24.11-small -p coreutils cacert curl jq nix dash bkt
 set -eu
 
 getset="${1:-}"
@@ -12,12 +13,11 @@ fi
 
 . ./skoda_env.sh
 
-token="$(./skoda_login.sh 2)"
-
 if [ "$getset" = "Set" ]; then
+    token="$(dash ./skoda_login.sh 2)"
     curl -s -H "Authorization: Bearer $token" -H 'Content-Type: application/json' https://api.connect.skoda-auto.cz/api/v1/air-conditioning/operation-requests/$value-window-heating -d "{\"vin\": \"$SKODA_VIN\"}" | jq '.status'
 else
-    ret="$(curl -s -H "Authorization: Bearer $token" https://api.connect.skoda-auto.cz/api/v1/air-conditioning/${SKODA_VIN}/status | jq -r '.windowsHeatingStatuses[].state' | uniq | tr -d '\n')"
+    ret="$(dash ./climate.sh | jq -r '.windowsHeatingStatuses[].state' | uniq | tr -d '\n')"
     if [ "$ret" = "Off" ]; then
         echo 0
     elif [ "$ret" = "On" ] || [ "$ret" = "OnOff" ] || [ "$ret" = "OffOn" ]; then

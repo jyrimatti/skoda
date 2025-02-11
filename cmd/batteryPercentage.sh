@@ -1,5 +1,6 @@
 #! /usr/bin/env nix-shell
-#! nix-shell --pure --keep CREDENTIALS_DIRECTORY --keep XDG_RUNTIME_DIR -i dash -I channel:nixos-24.11-small -p jq nix dash
+#! nix-shell --pure --keep CREDENTIALS_DIRECTORY --keep BKT_SCOPE --keep BKT_CACHE_DIR
+#! nix-shell -i dash -I channel:nixos-24.11-small -p jq nix dash bkt
 set -eu
 
 # Usage: ./batteryPercentage.sh
@@ -7,16 +8,16 @@ set -eu
 characteristic="${3:-BatteryLevel}"
 
 if [ "$characteristic" = "BatteryLevel" ]; then
-  ./charging.sh | jq '.battery.stateOfChargeInPercent'
+  dash ./charging.sh | jq '.battery.stateOfChargeInPercent'
 elif [ "$characteristic" = "StatusLowBattery" ]; then
-  res="$(./charging.sh | jq '.battery.stateOfChargeInPercent')"
+  res="$(dash ./charging.sh | jq '.battery.stateOfChargeInPercent')"
   if [ "$res" -lt 30 ]; then
     echo 1
   else
     echo 0
   fi
 elif [ "$characteristic" = "ChargingState" ]; then
-  res="$(./charging.sh | jq -r '.charging.state')"
+  res="$(dash ./charging.sh | jq -r '.charging.state')"
   if [ "$res" = "ReadyForCharging" ]; then
     echo 0
   elif [ "$res" = "Charging" ]; then

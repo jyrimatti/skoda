@@ -7,6 +7,8 @@ set -eu
 
 endpoint="$1"
 
-bkt --discard-failures --ttl 5m --stale 4m -- \
-  flock "${BKT_CACHE_DIR:-/tmp}/skoda-login-$endpoint.lock" -c \
-  "dash ./skoda_login_actual.sh '$endpoint'"
+lock="${BKT_CACHE_DIR:-/tmp}/skoda-login.lock"
+
+flock "$lock" \
+    bkt --discard-failures --ttl 5m --stale 4m -- \
+        dash ./skoda_login_actual.sh "$endpoint"
